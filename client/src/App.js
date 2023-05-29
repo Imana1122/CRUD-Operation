@@ -37,8 +37,7 @@ function App() {
   }
 
   const handleSubmit  = async(e)=>{
-    e.preventDefault()
-    
+    e.preventDefault()    
     const data =  await axios.post("/create",formData)
 
     
@@ -47,6 +46,11 @@ function App() {
       setAddSection(false);
       alert(data.data.message);
       getFetchData()
+      setFormData({
+        name : "",
+        email : "",
+        mobile : ""
+      })
     }
     
   }
