@@ -12,21 +12,31 @@ const PORT = process.env.PORT || 8080
 const schemaData = mongoose.Schema({
     name : String,
     email : String,
-    mobile : Number,
+    mobile : String,
 },{
     timestamps : true
 })
 
 const userModel = mongoose.model("user", schemaData)
 
-//read
+// read
+// https://localhost:8080/
 app.get("/",async(req,res)=>{
     const data = await userModel.find({})
     res.json({success : true, data : data})
 })
 
 
-//create data // save the data to mongodb
+// create data // save the data to mongodb
+// https://localhost:8080/create
+/*
+{
+    name,
+    email,
+    mobile
+}
+*/
+
 app.post("/create",async(req,res)=>{
     console.log(req.body)
     const data = new userModel(req.body)
@@ -36,18 +46,28 @@ app.post("/create",async(req,res)=>{
 })
 
 
-//update data
+// update data
+// https://localhost:8080/update
+/**
+ * {
+ *  id : "",
+ *  name : "",
+ *  email : "",
+ *  mobile : ""
+ * }
+ */
 app.put("/update",async(req,res)=>{
     console.log(req.body)
-    const { id, ...rest} = req.body
+    const { _id, ...rest} = req.body
 
     console.log(rest)
-    const data = await userModel.updateOne({_id : req.body.id},rest)
+    const data = await userModel.updateOne({_id : _id},rest)
     res.send({success : true, message : "data updated", data : data})
 })
 
 
-//delete api
+// delete api
+// https://localhost:8080/delete/id
 app.delete("/delete/:id",async(req,res)=>{
     const id = req.params.id
     console.log(id)
